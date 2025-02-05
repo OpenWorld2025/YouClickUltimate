@@ -1,6 +1,11 @@
-# YouClick Ultimate (Yc.U)
+# Yc.U - YouClick Ultimate
 
 A powerfulURL Click generator tool for automated YouTube/web interactions with proxy support and UI customization.
+
+
+![Yc U](https://github.com/user-attachments/assets/153ce41a-4d45-402d-a3de-50818ce58e0b)
+
+
 
 ![Python Version](https://img.shields.io/badge/python-3.7%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
