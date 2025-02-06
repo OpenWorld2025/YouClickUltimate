@@ -21,7 +21,7 @@ from PyQt5.QtWidgets import (
     QGroupBox, QLabel, QLineEdit, QTextEdit, QPushButton, QListWidget, QListWidgetItem,
     QRadioButton, QButtonGroup, QInputDialog, QCheckBox, QComboBox, QTimeEdit,
     QProgressBar, QDoubleSpinBox, QSpinBox, QFileDialog, QSlider, QSizePolicy,
-    QGraphicsOpacityEffect
+    QGraphicsOpacityEffect, QMessageBox
 )
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtGui import QDesktopServices
@@ -49,7 +49,8 @@ NIGHT_BUTTON_STYLE_DEFAULT = "background-color: #161616; color: white; border-ra
 BLUE_RADIO = "QRadioButton { color: #337ab7; padding: 3px; margin: 2px 0px; }"
 
 # --- Übersetzungsfunktionalität und Wörterbücher
-CURRENT_LANG = 'de'
+# Die Übersetzungen für Englisch, Französisch, Spanisch, Polnisch, Russisch werden automatisch verwendet.
+CURRENT_LANG = 'en'
 translations = {
     'de': {
         "Ab wann soll das helle Motiv verwendet werden? (Direkte Eingabe möglich)":
@@ -143,7 +144,8 @@ translations = {
         "Einzelne URL auswählen": "Einzelne URL auswählen",
         "Wähle eine URL:": "Wähle eine URL:",
         "Video abdunkeln": "Video abdunkeln",
-        "Abdunklungsgrad:": "Abdunklungsgrad:"
+        "Abdunklungsgrad:": "Abdunklungsgrad:",
+        "Über Yc.U": "Über Yc.U"
     },
     'en': {
         "Ab wann soll das helle Motiv verwendet werden? (Direkte Eingabe möglich)":
@@ -165,10 +167,10 @@ translations = {
         "Sequentiell": "Sequential",
         "Zufällig": "Random",
         "Parameter & URL Eingabe": "Parameters & URL Input",
-        "Wartezeit URL Aufruf:": "Wait time for URL call:",
+        "Wartezeit URL Aufruf:": "Wait time before URL call:",
         "Random Zusatz MIN (ms):": "Random additional MIN (ms):",
         "Random Zusatz MAX (ms):": "Random additional MAX (ms):",
-        "Durchlauf Wiederholungen:": "Repetitions:",
+        "Durchlauf Wiederholungen:": "Iteration repetitions:",
         "Neue URL eingeben...": "Enter new URL...",
         "Proxy Einstellungen": "Proxy Settings",
         "Proxy verwenden": "Use Proxy",
@@ -181,7 +183,7 @@ translations = {
         "URL Auswahl": "URL Selection",
         "YouTube Kanal Videos abrufen": "Fetch YouTube Channel Videos",
         "YouTube Kanal-URL, Kanal-ID oder Handle eingeben...":
-            "Enter YouTube Channel URL, Channel ID, or Handle...",
+            "Enter YouTube channel URL, channel ID, or handle...",
         "Wert eingeben": "Enter value",
         "Neuen Wert eingeben:": "Enter new value:",
         "Theme gewechselt: Tag Modus (": "Theme switched: Day Mode (",
@@ -193,22 +195,22 @@ translations = {
         "Auswahl abgebrochen.": "Selection cancelled.",
         "Keine URLs ausgewählt!": "No URLs selected!",
         "Ungültige URL-Auswahl.": "Invalid URL selection.",
-        "Starte Ablauf (zufällig), Wiederholungen:": "Starting sequence (random), repetitions:",
-        "Starte Ablauf (sequentiell), Wiederholungen:": "Starting sequence (sequential), repetitions:",
-        "Beginne Wiederholung": "Starting repetition",
+        "Starte Ablauf (zufällig), Wiederholungen:": "Starting process (random), repetitions:",
+        "Starte Ablauf (sequentiell), Wiederholungen:": "Starting process (sequential), repetitions:",
+        "Beginne Wiederholung": "Beginning repetition",
         "von": "of",
         "Öffne URL:": "Opening URL:",
         "Warte": "Waiting",
         "Sekunden ...": "seconds ...",
-        "Ablauf gestoppt.": "Sequence stopped.",
-        "Ablauf beendet.": "Sequence completed.",
+        "Ablauf gestoppt.": "Process stopped.",
+        "Ablauf beendet.": "Process finished.",
         "Stop-Befehl empfangen. Ablauf abgebrochen.":
-            "Stop command received. Sequence aborted.",
+            "Stop command received. Process aborted.",
         "Proxy aktiviert, aber Host oder Port fehlen. URL-Aufruf wird abgebrochen.":
             "Proxy enabled but host or port missing. URL call aborted.",
-        "Lade URL über SOCKS4 Proxy:": "Loading URL via SOCKS4 proxy:",
-        "Lade URL über SOCKS5 Proxy:": "Loading URL via SOCKS5 proxy:",
-        "Lade URL über Proxy:": "Loading URL via proxy:",
+        "Lade URL über SOCKS4 Proxy:": "Loading URL via SOCKS4 Proxy:",
+        "Lade URL über SOCKS5 Proxy:": "Loading URL via SOCKS5 Proxy:",
+        "Lade URL über Proxy:": "Loading URL via Proxy:",
         "Fehler: Status Code": "Error: Status Code",
         "Fehler beim Proxy-Aufruf:": "Error during proxy call:",
         "Kein Proxy aktiviert – daher wird die URL direkt geladen.":
@@ -222,33 +224,416 @@ translations = {
             "Error fetching handle page:",
         "Fehler beim Abrufen des Feeds: Status Code":
             "Error fetching feed: Status Code",
-        "Videos vom Kanal hinzugefügt.": "Channel videos added.",
+        "Videos vom Kanal hinzugefügt.": "Videos added from channel.",
         "Parameter Aktualisieren": "Update Parameters",
         "Funktion": "Function",
-        "Funkt.:" : "Funct.:",
-        "Wartezeit URL Aufruf:": "Wait time for URL call:",
+        "Funkt.:" : "Func.:",
+        "Wartezeit URL Aufruf:": "Wait time before URL call:",
         "Wartezeit": "Wait time",
-        "Durchlauf Wiederholungen:": "Repetitions:",
+        "Durchlauf Wiederholungen:": "Iteration repetitions:",
         "Wiederholungen:": "Repetitions:",
         "URL hinzugefügt:": "URL added:",
         "URL gelöscht:": "URL deleted:",
         "Alle URLs wurden gelöscht.": "All URLs deleted.",
         "Keine URL zum Löschen ausgewählt.": "No URL selected for deletion.",
-        "Einzelne URL auswählen": "Select single URL",
+        "Einzelne URL auswählen": "Select Single URL",
         "Wähle eine URL:": "Choose a URL:",
         "Video abdunkeln": "Darken Video",
-        "Abdunklungsgrad:": "Darkness Level:"
+        "Abdunklungsgrad:": "Darkening level:",
+        "Über Yc.U": "About Yc.U"
+    },
+    'fr': {
+        "Ab wann soll das helle Motiv verwendet werden? (Direkte Eingabe möglich)":
+            "À partir de quand le thème clair doit-il être utilisé ? (Saisie directe possible)",
+        "Tagmodus ab:": "Mode jour à partir de :",
+        "Ab wann soll das dunkle Motiv verwendet werden? (Direkte Eingabe möglich)":
+            "À partir de quand le thème sombre doit-il être utilisé ? (Saisie directe possible)",
+        "Nachtmodus ab:": "Mode nuit à partir de :",
+        "Tag Theme:": "Thème jour :",
+        "Nacht Theme:": "Thème nuit :",
+        "Tag Modus": "Mode jour",
+        "Nacht Modus": "Mode nuit",
+        "URL Hinzufügen": "Ajouter URL",
+        "URL Löschen": "Supprimer URL",
+        "Alle URLs Löschen": "Supprimer toutes les URLs",
+        "URLs": "URLs",
+        "Funktionen": "Fonctions",
+        "Einmalig": "Une seule fois",
+        "Sequentiell": "Séquentiel",
+        "Zufällig": "Aléatoire",
+        "Parameter & URL Eingabe": "Paramètres & saisie URL",
+        "Wartezeit URL Aufruf:": "Temps d'attente avant appel URL :",
+        "Random Zusatz MIN (ms):": "Ajout aléatoire MIN (ms) :",
+        "Random Zusatz MAX (ms):": "Ajout aléatoire MAX (ms) :",
+        "Durchlauf Wiederholungen:": "Itérations :",
+        "Neue URL eingeben...": "Entrer nouvelle URL...",
+        "Proxy Einstellungen": "Paramètres Proxy",
+        "Proxy verwenden": "Utiliser Proxy",
+        "Typ:": "Type :",
+        "z.B. proxy.example.com": "ex. proxy.example.com",
+        "z.B. 8080": "ex. 8080",
+        "Aufgerufene Website / Video": "Site Web / Vidéo chargé(e)",
+        "Protokoll / Live Status": "Journal / Statut en direct",
+        "Protokoll löschen": "Effacer le journal",
+        "URL Auswahl": "Sélection d'URL",
+        "YouTube Kanal Videos abrufen": "Récupérer vidéos de la chaîne YouTube",
+        "YouTube Kanal-URL, Kanal-ID oder Handle eingeben...":
+            "Entrez l'URL de la chaîne YouTube, l'ID ou le pseudo...",
+        "Wert eingeben": "Entrer une valeur",
+        "Neuen Wert eingeben:": "Entrer une nouvelle valeur :",
+        "Theme gewechselt: Tag Modus (": "Thème changé : Mode jour (",
+        "Theme gewechselt: Nacht Modus (": "Thème changé : Mode nuit (",
+        "Kein YouTube-Kanal angegeben.": "Aucune chaîne YouTube fournie.",
+        "Konnte den Titel nicht laden:": "Impossible de charger le titre :",
+        "Keine gültige URL eingegeben.": "URL invalide entrée.",
+        "Keine URLs in der Liste!": "Aucune URL dans la liste !",
+        "Auswahl abgebrochen.": "Sélection annulée.",
+        "Keine URLs ausgewählt!": "Aucune URL sélectionnée !",
+        "Ungültige URL-Auswahl.": "Sélection d'URL invalide.",
+        "Starte Ablauf (zufällig), Wiederholungen:" : "Démarrage du processus (aléatoire), itérations :",
+        "Starte Ablauf (sequentiell), Wiederholungen:" : "Démarrage du processus (séquentiel), itérations :",
+        "Beginne Wiederholung": "Début de l'itération",
+        "von": "sur",
+        "Öffne URL:": "Ouverture de l'URL :",
+        "Warte": "Attente",
+        "Sekunden ...": "secondes ...",
+        "Ablauf gestoppt.": "Processus arrêté.",
+        "Ablauf beendet.": "Processus terminé.",
+        "Stop-Befehl empfangen. Ablauf abgebrochen.":
+            "Commande d'arrêt reçue. Processus annulé.",
+        "Proxy aktiviert, aber Host oder Port fehlen. URL-Aufruf wird abgebrochen.":
+            "Proxy activé mais hôte ou port manquant. Appel URL annulé.",
+        "Lade URL über SOCKS4 Proxy:": "Chargement de l'URL via Proxy SOCKS4 :",
+        "Lade URL über SOCKS5 Proxy:": "Chargement de l'URL via Proxy SOCKS5 :",
+        "Lade URL über Proxy:": "Chargement de l'URL via Proxy :",
+        "Fehler: Status Code": "Erreur : Code de statut",
+        "Fehler beim Proxy-Aufruf:": "Erreur lors de l'appel au Proxy :",
+        "Kein Proxy aktiviert – daher wird die URL direkt geladen.":
+            "Aucun Proxy activé – chargement direct de l'URL.",
+        "Fehler beim Abrufen des YouTube-Titels:": "Erreur lors du chargement du titre YouTube :",
+        "Konnte die Channel-ID aus der Handle-Seite nicht extrahieren.":
+            "Impossible d'extraire l'ID de la chaîne depuis la page du pseudo.",
+        "Fehler beim Abrufen der Handle-Seite: Status Code":
+            "Erreur lors du chargement de la page du pseudo : Code de statut",
+        "Fehler beim Abrufen der Handle-Seite:":
+            "Erreur lors du chargement de la page du pseudo :",
+        "Fehler beim Abrufen des Feeds: Status Code":
+            "Erreur lors du chargement du flux : Code de statut",
+        "Videos vom Kanal hinzugefügt.": "Vidéos de la chaîne ajoutées.",
+        "Parameter Aktualisieren": "Mettre à jour les paramètres",
+        "Funktion": "Fonction",
+        "Funkt.:" : "Fonct.:",
+        "Wartezeit URL Aufruf:": "Temps d'attente avant appel URL :",
+        "Wartezeit": "Temps d'attente",
+        "Durchlauf Wiederholungen:": "Itérations :",
+        "Wiederholungen:": "Itérations :",
+        "URL hinzugefügt:": "URL ajoutée :",
+        "URL gelöscht:": "URL supprimée :",
+        "Alle URLs wurden gelöscht.": "Toutes les URLs ont été supprimées.",
+        "Keine URL zum Löschen ausgewählt.": "Aucune URL sélectionnée pour suppression.",
+        "Einzelne URL auswählen": "Sélectionner une URL",
+        "Wähle eine URL:": "Choisissez une URL :",
+        "Video abdunkeln": "Assombrir la vidéo",
+        "Abdunklungsgrad:": "Niveau d'assombrissement :",
+        "Über Yc.U": "À propos de Yc.U"
+    },
+    'es': {
+        "Ab wann soll das helle Motiv verwendet werden? (Direkte Eingabe möglich)":
+            "¿Desde cuándo se debe usar el tema claro? (Entrada directa posible)",
+        "Tagmodus ab:": "Modo día desde:",
+        "Ab wann soll das dunkle Motiv verwendet werden? (Direkte Eingabe möglich)":
+            "¿Desde cuándo se debe usar el tema oscuro? (Entrada directa posible)",
+        "Nachtmodus ab:": "Modo noche desde:",
+        "Tag Theme:": "Tema de día:",
+        "Nacht Theme:": "Tema de noche:",
+        "Tag Modus": "Modo día",
+        "Nacht Modus": "Modo noche",
+        "URL Hinzufügen": "Agregar URL",
+        "URL Löschen": "Eliminar URL",
+        "Alle URLs Löschen": "Eliminar todas las URLs",
+        "URLs": "URLs",
+        "Funktionen": "Funciones",
+        "Einmalig": "Una vez",
+        "Sequentiell": "Secuencial",
+        "Zufällig": "Aleatorio",
+        "Parameter & URL Eingabe": "Parámetros y entrada de URL",
+        "Wartezeit URL Aufruf:": "Tiempo de espera antes de llamar a la URL:",
+        "Random Zusatz MIN (ms):": "Adicional aleatorio MIN (ms):",
+        "Random Zusatz MAX (ms):": "Adicional aleatorio MAX (ms):",
+        "Durchlauf Wiederholungen:": "Repeticiones:",
+        "Neue URL eingeben...": "Ingrese nueva URL...",
+        "Proxy Einstellungen": "Configuración de Proxy",
+        "Proxy verwenden": "Usar Proxy",
+        "Typ:": "Tipo:",
+        "z.B. proxy.example.com": "p.ej. proxy.example.com",
+        "z.B. 8080": "p.ej. 8080",
+        "Aufgerufene Website / Video": "Sitio web / video cargado",
+        "Protokoll / Live Status": "Registro / estado en vivo",
+        "Protokoll löschen": "Borrar registro",
+        "URL Auswahl": "Selección de URL",
+        "YouTube Kanal Videos abrufen": "Obtener videos del canal de YouTube",
+        "YouTube Kanal-URL, Kanal-ID oder Handle eingeben...":
+            "Ingrese URL del canal de YouTube, ID o nombre...",
+        "Wert eingeben": "Ingrese valor",
+        "Neuen Wert eingeben:": "Ingrese nuevo valor:",
+        "Theme gewechselt: Tag Modus (": "Tema cambiado: Modo día (",
+        "Theme gewechselt: Nacht Modus (": "Tema cambiado: Modo noche (",
+        "Kein YouTube-Kanal angegeben.": "No se especificó canal de YouTube.",
+        "Konnte den Titel nicht laden:": "No se pudo cargar el título:",
+        "Keine gültige URL eingegeben.": "No se ingresó una URL válida.",
+        "Keine URLs in der Liste!": "¡No hay URLs en la lista!",
+        "Auswahl abgebrochen.": "Selección cancelada.",
+        "Keine URLs ausgewählt!": "¡No se seleccionaron URLs!",
+        "Ungültige URL-Auswahl.": "Selección de URL inválida.",
+        "Starte Ablauf (zufällig), Wiederholungen:" : "Iniciando proceso (aleatorio), repeticiones:",
+        "Starte Ablauf (sequentiell), Wiederholungen:" : "Iniciando proceso (secuencial), repeticiones:",
+        "Beginne Wiederholung": "Iniciando repetición",
+        "von": "de",
+        "Öffne URL:": "Abriendo URL:",
+        "Warte": "Esperando",
+        "Sekunden ...": "segundos ...",
+        "Ablauf gestoppt.": "Proceso detenido.",
+        "Ablauf beendet.": "Proceso terminado.",
+        "Stop-Befehl empfangen. Ablauf abgebrochen.":
+            "Se recibió el comando de parada. Proceso abortado.",
+        "Proxy aktiviert, aber Host oder Port fehlen. URL-Aufruf wird abgebrochen.":
+            "Proxy activado pero falta host o puerto. Llamada a la URL abortada.",
+        "Lade URL über SOCKS4 Proxy:": "Cargando URL a través de Proxy SOCKS4:",
+        "Lade URL über SOCKS5 Proxy:": "Cargando URL a través de Proxy SOCKS5:",
+        "Lade URL über Proxy:": "Cargando URL a través de Proxy:",
+        "Fehler: Status Code": "Error: Código de estado",
+        "Fehler beim Proxy-Aufruf:": "Error al llamar al Proxy:",
+        "Kein Proxy aktiviert – daher wird die URL direkt geladen.":
+            "No hay Proxy activado – cargando URL directamente.",
+        "Fehler beim Abrufen des YouTube-Titels:": "Error al obtener el título de YouTube:",
+        "Konnte die Channel-ID aus der Handle-Seite nicht extrahieren.":
+            "No se pudo extraer la ID del canal de la página del identificador.",
+        "Fehler beim Abrufen der Handle-Seite: Status Code":
+            "Error al obtener la página del identificador: Código de estado",
+        "Fehler beim Abrufen der Handle-Seite:":
+            "Error al obtener la página del identificador:",
+        "Fehler beim Abrufen des Feeds: Status Code":
+            "Error al obtener el feed: Código de estado",
+        "Videos vom Kanal hinzugefügt.": "Videos del canal agregados.",
+        "Parameter Aktualisieren": "Actualizar parámetros",
+        "Funktion": "Función",
+        "Funkt.:" : "Func.:",
+        "Wartezeit URL Aufruf:": "Tiempo de espera antes de llamar a la URL:",
+        "Wartezeit": "Tiempo de espera",
+        "Durchlauf Wiederholungen:": "Repeticiones:",
+        "Wiederholungen:": "Repeticiones:",
+        "URL hinzugefügt:": "URL agregada:",
+        "URL gelöscht:": "URL eliminada:",
+        "Alle URLs wurden gelöscht.": "Todas las URLs fueron eliminadas.",
+        "Keine URL zum Löschen ausgewählt.": "No se seleccionó ninguna URL para eliminar.",
+        "Einzelne URL auswählen": "Seleccionar URL individual",
+        "Wähle eine URL:": "Elige una URL:",
+        "Video abdunkeln": "Oscurecer video",
+        "Abdunklungsgrad:": "Nivel de oscurecimiento:",
+        "Über Yc.U": "Acerca de Yc.U"
+    },
+    'pl': {
+        "Ab wann soll das helle Motiv verwendet werden? (Direkte Eingabe möglich)":
+            "Od kiedy używać jasnego motywu? (Możliwość bezpośredniego wpisania)",
+        "Tagmodus ab:": "Tryb dzienny od:",
+        "Ab wann soll das dunkle Motiv verwendet werden? (Direkte Eingabe möglich)":
+            "Od kiedy używać ciemnego motywu? (Możliwość bezpośredniego wpisania)",
+        "Nachtmodus ab:": "Tryb nocny od:",
+        "Tag Theme:": "Motyw dzienny:",
+        "Nacht Theme:": "Motyw nocny:",
+        "Tag Modus": "Tryb dzienny",
+        "Nacht Modus": "Tryb nocny",
+        "URL Hinzufügen": "Dodaj URL",
+        "URL Löschen": "Usuń URL",
+        "Alle URLs Löschen": "Usuń wszystkie URL",
+        "URLs": "URL",
+        "Funktionen": "Funkcje",
+        "Einmalig": "Jednorazowo",
+        "Sequentiell": "Sekwencyjnie",
+        "Zufällig": "Losowo",
+        "Parameter & URL Eingabe": "Parametry i wprowadzanie URL",
+        "Wartezeit URL Aufruf:": "Czas oczekiwania przed wywołaniem URL:",
+        "Random Zusatz MIN (ms):": "Dodatkowo MIN (ms):",
+        "Random Zusatz MAX (ms):": "Dodatkowo MAX (ms):",
+        "Durchlauf Wiederholungen:": "Powtórzenia:",
+        "Neue URL eingeben...": "Wprowadź nowy URL...",
+        "Proxy Einstellungen": "Ustawienia Proxy",
+        "Proxy verwenden": "Użyj Proxy",
+        "Typ:": "Typ:",
+        "z.B. proxy.example.com": "np. proxy.example.com",
+        "z.B. 8080": "np. 8080",
+        "Aufgerufene Website / Video": "Otwarta strona / wideo",
+        "Protokoll / Live Status": "Log / stan na żywo",
+        "Protokoll löschen": "Wyczyść log",
+        "URL Auswahl": "Wybór URL",
+        "YouTube Kanal Videos abrufen": "Pobierz filmy kanału YouTube",
+        "YouTube Kanal-URL, Kanal-ID oder Handle eingeben...":
+            "Wprowadź URL kanału YouTube, ID kanału lub nazwę...",
+        "Wert eingeben": "Wprowadź wartość",
+        "Neuen Wert eingeben:": "Wprowadź nową wartość:",
+        "Theme gewechselt: Tag Modus (": "Motyw zmieniony: Tryb dzienny (",
+        "Theme gewechselt: Nacht Modus (": "Motyw zmieniony: Tryb nocny (",
+        "Kein YouTube-Kanal angegeben.": "Nie podano kanału YouTube.",
+        "Konnte den Titel nicht laden:": "Nie udało się pobrać tytułu:",
+        "Keine gültige URL eingegeben.": "Wprowadzono nieprawidłowy URL.",
+        "Keine URLs in der Liste!": "Brak URL na liście!",
+        "Auswahl abgebrochen.": "Wybór anulowany.",
+        "Keine URLs ausgewählt!": "Nie wybrano URL!",
+        "Ungültige URL-Auswahl.": "Nieprawidłowy wybór URL.",
+        "Starte Ablauf (zufällig), Wiederholungen:" : "Uruchamiam proces (losowo), powtórzenia:",
+        "Starte Ablauf (sequentiell), Wiederholungen:" : "Uruchamiam proces (sekwencyjnie), powtórzenia:",
+        "Beginne Wiederholung": "Rozpoczynam powtórzenie",
+        "von": "z",
+        "Öffne URL:": "Otwieram URL:",
+        "Warte": "Czekam",
+        "Sekunden ...": "sekund ...",
+        "Ablauf gestoppt.": "Proces zatrzymany.",
+        "Ablauf beendet.": "Proces zakończony.",
+        "Stop-Befehl empfangen. Ablauf abgebrochen.":
+            "Odebrano polecenie stop. Proces przerwany.",
+        "Proxy aktiviert, aber Host oder Port fehlen. URL-Aufruf wird abgebrochen.":
+            "Proxy aktywowany, ale brakuje hosta lub portu. Wywołanie URL przerwane.",
+        "Lade URL über SOCKS4 Proxy:": "Ładowanie URL przez Proxy SOCKS4:",
+        "Lade URL über SOCKS5 Proxy:": "Ładowanie URL przez Proxy SOCKS5:",
+        "Lade URL über Proxy:": "Ładowanie URL przez Proxy:",
+        "Fehler: Status Code": "Błąd: Kod statusu",
+        "Fehler beim Proxy-Aufruf:": "Błąd przy wywołaniu Proxy:",
+        "Kein Proxy aktiviert – daher wird die URL direkt geladen.":
+            "Brak aktywnego Proxy – ładuję URL bezpośrednio.",
+        "Fehler beim Abrufen des YouTube-Titels:": "Błąd przy pobieraniu tytułu YouTube:",
+        "Konnte die Channel-ID aus der Handle-Seite nicht extrahieren.":
+            "Nie udało się wyodrębnić ID kanału ze strony identyfikatora.",
+        "Fehler beim Abrufen der Handle-Seite: Status Code":
+            "Błąd przy pobieraniu strony identyfikatora: Kod statusu",
+        "Fehler beim Abrufen der Handle-Seite:":
+            "Błąd przy pobieraniu strony identyfikatora:",
+        "Fehler beim Abrufen des Feeds: Status Code":
+            "Błąd przy pobieraniu kanału: Kod statusu",
+        "Videos vom Kanal hinzugefügt.": "Filmy z kanału zostały dodane.",
+        "Parameter Aktualisieren": "Aktualizuj parametry",
+        "Funktion": "Funkcja",
+        "Funkt.:" : "Funk.:",
+        "Wartezeit URL Aufruf:": "Czas oczekiwania przed wywołaniem URL:",
+        "Wartezeit": "Czas oczekiwania",
+        "Durchlauf Wiederholungen:": "Powtórzenia:",
+        "Wiederholungen:": "Powtórzenia:",
+        "URL hinzugefügt:": "URL dodany:",
+        "URL gelöscht:": "URL usunięty:",
+        "Alle URLs wurden gelöscht.": "Wszystkie URL zostały usunięte.",
+        "Keine URL zum Löschen ausgewählt.": "Nie wybrano URL do usunięcia.",
+        "Einzelne URL auswählen": "Wybierz pojedynczy URL",
+        "Wähle eine URL:": "Wybierz URL:",
+        "Video abdunkeln": "Przyciemnij wideo",
+        "Abdunklungsgrad:": "Stopień przyciemnienia:",
+        "Über Yc.U": "O Yc.U"
+    },
+    'ru': {
+        "Ab wann soll das helle Motiv verwendet werden? (Direkte Eingabe möglich)":
+            "С какого момента использовать светлую тему? (Возможен прямой ввод)",
+        "Tagmodus ab:": "Дневной режим с:",
+        "Ab wann soll das dunkle Motiv verwendet werden? (Direkte Eingabe möglich)":
+            "С какого момента использовать тёмную тему? (Возможен прямой ввод)",
+        "Nachtmodus ab:": "Ночной режим с:",
+        "Tag Theme:": "Дневная тема:",
+        "Nacht Theme:": "Ночная тема:",
+        "Tag Modus": "Дневной режим",
+        "Nacht Modus": "Ночной режим",
+        "URL Hinzufügen": "Добавить URL",
+        "URL Löschen": "Удалить URL",
+        "Alle URLs Löschen": "Удалить все URL",
+        "URLs": "URL",
+        "Funktionen": "Функции",
+        "Einmalig": "Один раз",
+        "Sequentiell": "Последовательно",
+        "Zufällig": "Случайно",
+        "Parameter & URL Eingabe": "Параметры и ввод URL",
+        "Wartezeit URL Aufruf:": "Время ожидания перед вызовом URL:",
+        "Random Zusatz MIN (ms):": "Случайное добавление MIN (мс):",
+        "Random Zusatz MAX (ms):": "Случайное добавление MAX (мс):",
+        "Durchlauf Wiederholungen:": "Повторения:",
+        "Neue URL eingeben...": "Введите новый URL...",
+        "Proxy Einstellungen": "Настройки Proxy",
+        "Proxy verwenden": "Использовать Proxy",
+        "Typ:": "Тип:",
+        "z.B. proxy.example.com": "например, proxy.example.com",
+        "z.B. 8080": "например, 8080",
+        "Aufgerufene Website / Video": "Загруженный сайт / видео",
+        "Protokoll / Live Status": "Журнал / статус в реальном времени",
+        "Protokoll löschen": "Очистить журнал",
+        "URL Auswahl": "Выбор URL",
+        "YouTube Kanal Videos abrufen": "Получить видео канала YouTube",
+        "YouTube Kanal-URL, Kanal-ID oder Handle eingeben...":
+            "Введите URL канала YouTube, ID канала или псевдоним...",
+        "Wert eingeben": "Введите значение",
+        "Neuen Wert eingeben:": "Введите новое значение:",
+        "Theme gewechselt: Tag Modus (": "Смена темы: Дневной режим (",
+        "Theme gewechselt: Nacht Modus (": "Смена темы: Ночной режим (",
+        "Kein YouTube-Kanal angegeben.": "Канал YouTube не указан.",
+        "Konnte den Titel nicht laden:": "Не удалось загрузить заголовок:",
+        "Keine gültige URL eingegeben.": "Введён некорректный URL.",
+        "Keine URLs in der Liste!": "Список URL пуст!",
+        "Auswahl abgebrochen.": "Выбор отменён.",
+        "Keine URLs ausgewählt!": "Нет выбранных URL!",
+        "Ungültige URL-Auswahl.": "Неверный выбор URL.",
+        "Starte Ablauf (zufällig), Wiederholungen:" : "Запуск процесса (случайно), повторения:",
+        "Starte Ablauf (sequentiell), Wiederholungen:" : "Запуск процесса (последовательно), повторения:",
+        "Beginne Wiederholung": "Начинаю повторение",
+        "von": "из",
+        "Öffne URL:": "Открываю URL:",
+        "Warte": "Ожидание",
+        "Sekunden ...": "секунд ...",
+        "Ablauf gestoppt.": "Процесс остановлен.",
+        "Ablauf beendet.": "Процесс завершён.",
+        "Stop-Befehl empfangen. Ablauf abgebrochen.":
+            "Получена команда остановки. Процесс прерван.",
+        "Proxy aktiviert, aber Host oder Port fehlen. URL-Aufruf wird abgebrochen.":
+            "Proxy включён, но отсутствует хост или порт. Вызов URL прерван.",
+        "Lade URL über SOCKS4 Proxy:": "Загрузка URL через SOCKS4 Proxy:",
+        "Lade URL über SOCKS5 Proxy:": "Загрузка URL через SOCKS5 Proxy:",
+        "Lade URL über Proxy:": "Загрузка URL через Proxy:",
+        "Fehler: Status Code": "Ошибка: Код статуса",
+        "Fehler beim Proxy-Aufruf:": "Ошибка при вызове через Proxy:",
+        "Kein Proxy aktiviert – daher wird die URL direkt geladen.":
+            "Proxy не активирован – загружается URL напрямую.",
+        "Fehler beim Abrufen des YouTube-Titels:": "Ошибка при получении заголовка YouTube:",
+        "Konnte die Channel-ID aus der Handle-Seite nicht extrahieren.":
+            "Не удалось извлечь ID канала со страницы псевдонима.",
+        "Fehler beim Abrufen der Handle-Seite: Status Code":
+            "Ошибка при получении страницы псевдонима: Код статуса",
+        "Fehler beim Abrufen der Handle-Seite:":
+            "Ошибка при получении страницы псевдонима:",
+        "Fehler beim Abrufen des Feeds: Status Code":
+            "Ошибка при получении ленты: Код статуса",
+        "Videos vom Kanal hinzugefügt.": "Видео с канала добавлены.",
+        "Parameter Aktualisieren": "Обновить параметры",
+        "Funktion": "Функция",
+        "Funkt.:" : "Функц.:",
+        "Wartezeit URL Aufruf:": "Время ожидания перед вызовом URL:",
+        "Wartezeit": "Время ожидания",
+        "Durchlauf Wiederholungen:": "Повторения:",
+        "Wiederholungen:": "Повторения:",
+        "URL hinzugefügt:": "URL добавлен:",
+        "URL gelöscht:": "URL удалён:",
+        "Alle URLs wurden gelöscht.": "Все URL были удалены.",
+        "Keine URL zum Löschen ausgewählt.": "Не выбран ни один URL для удаления.",
+        "Einzelne URL auswählen": "Выбрать отдельный URL",
+        "Wähle eine URL:": "Выберите URL:",
+        "Video abdunkeln": "Затемнить видео",
+        "Abdunklungsgrad:": "Степень затемнения:",
+        "Über Yc.U": "О Yc.U"
     }
 }
 
 def _tr(text):
-    return translations.get(CURRENT_LANG, {}).get(text, text)
+    return translations.get(CURRENT_LANG, translations['en']).get(text, text)
 
 def set_language_automatically():
     global CURRENT_LANG
     sys_lang = locale.getdefaultlocale()[0]
     if sys_lang:
-        if sys_lang.startswith("en"):
+        if sys_lang.startswith("de"):
+            CURRENT_LANG = "de"
+        elif sys_lang.startswith("en"):
             CURRENT_LANG = "en"
         elif sys_lang.startswith("fr"):
             CURRENT_LANG = "fr"
@@ -256,180 +641,169 @@ def set_language_automatically():
             CURRENT_LANG = "es"
         elif sys_lang.startswith("pl"):
             CURRENT_LANG = "pl"
+        elif sys_lang.startswith("ru"):
+            CURRENT_LANG = "ru"
         else:
-            CURRENT_LANG = "de"
+            CURRENT_LANG = "en"
     else:
-        CURRENT_LANG = "de"
+        CURRENT_LANG = "en"
 
 # --- Themes
+# Tag-Themen (alle Einträge erhalten eine Nummerierung)
 DAY_THEMES = {
-    "Weiß (Standard)": """
+    "1. Weiß (Standard)": """
         QMainWindow { background-color: #ffffff; }
-        QGroupBox { background-color: #f9f9f9; color: #333333; border: 1px solid #cccccc; border-radius: 5px; margin-top: 10px; }
-        QLineEdit, QTextEdit, QListWidget { background-color: #ffffff; color: #000000; border: 1px solid #cccccc; border-radius: 3px; padding: 2px; }
-        QPushButton { background-color: #ffd700; color: black; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
+        QGroupBox { background-color: #fafafa; color: #333333; border: 1px solid #bbb; border-radius: 5px; margin-top: 10px; }
+        QLineEdit, QTextEdit, QListWidget { background-color: #ffffff; color: #000000; border: 1px solid #bbb; border-radius: 3px; padding: 2px; }
+        QPushButton { background-color: #fdd835; color: black; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
         QWebEngineView { background-color: #ffffff; }
     """,
-    "Grün": """
-        QMainWindow { background-color: #f0f0f0; }
-        QGroupBox { background-color: #e0e0e0; color: #222222; border: 1px solid #aaaaaa; border-radius: 5px; margin-top: 10px; }
-        QLineEdit, QTextEdit, QListWidget { background-color: #ffffff; color: #000000; border: 1px solid #aaaaaa; border-radius: 3px; padding: 2px; }
-        QPushButton { background-color: #4CAF50; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
+    "2. Grün Modern": """
+        QMainWindow { background-color: #e8f5e9; }
+        QGroupBox { background-color: #c8e6c9; color: #2e7d32; border: 1px solid #81c784; border-radius: 5px; margin-top: 10px; }
+        QLineEdit, QTextEdit, QListWidget { background-color: #ffffff; color: #2e7d32; border: 1px solid #81c784; border-radius: 3px; padding: 2px; }
+        QPushButton { background-color: #66bb6a; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
         QWebEngineView { background-color: #ffffff; }
     """,
-    "Blau": """
+    "3. Blau": """
         QMainWindow { background-color: #e6f7ff; }
         QGroupBox { background-color: #cceeff; color: #003366; border: 1px solid #99ccff; border-radius: 5px; margin-top: 10px; }
         QLineEdit, QTextEdit, QListWidget { background-color: #ffffff; color: #003366; border: 1px solid #99ccff; border-radius: 3px; padding: 2px; }
         QPushButton { background-color: #3399ff; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
         QWebEngineView { background-color: #ffffff; }
     """,
-    "Gelb": """
-        QMainWindow { background-color: #fffacd; }
-        QGroupBox { background-color: #fff8dc; color: #665500; border: 1px solid #ffeb99; border-radius: 5px; margin-top: 10px; }
-        QLineEdit, QTextEdit, QListWidget { background-color: #ffffff; color: #665500; border: 1px solid #ffeb99; border-radius: 3px; padding: 2px; }
-        QPushButton { background-color: #ffcc00; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QWebEngineView { background-color: #ffffff; }
+    "4. Gelb": """
+        QMainWindow { background-color: #fffde7; }
+        QGroupBox { background-color: #fff9c4; color: #f57f17; border: 1px solid #ffe082; border-radius: 5px; margin-top: 10px; }
+        QLineEdit, QTextEdit, QListWidget { background-color: #fffde7; color: #f57f17; border: 1px solid #ffe082; border-radius: 3px; padding: 2px; }
+        QPushButton { background-color: #ffeb3b; color: black; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
+        QWebEngineView { background-color: #fffde7; }
     """,
-    "Beige": """
-        QMainWindow { background-color: #f5f5dc; }
-        QGroupBox { background-color: #fafad2; color: #333300; border: 1px solid #e6e6b3; border-radius: 5px; margin-top: 10px; }
-        QLineEdit, QTextEdit, QListWidget { background-color: #ffffff; color: #333300; border: 1px solid #e6e6b3; border-radius: 3px; padding: 2px; }
-        QPushButton { background-color: #b3b300; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QWebEngineView { background-color: #ffffff; }
+    "5. Beige Classic": """
+        QMainWindow { background-color: #fff8e1; }
+        QGroupBox { background-color: #ffecb3; color: #8d6e63; border: 1px solid #ffe0b2; border-radius: 5px; margin-top: 10px; }
+        QLineEdit, QTextEdit, QListWidget { background-color: #fff8e1; color: #8d6e63; border: 1px solid #ffe0b2; border-radius: 3px; padding: 2px; }
+        QPushButton { background-color: #ffd54f; color: black; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
+        QWebEngineView { background-color: #fff8e1; }
     """,
-    "Lavendel": """
-        QMainWindow { background-color: #e6e6fa; }
-        QGroupBox { background-color: #d8bfd8; color: #4b0082; border: 1px solid #c8a2c8; border-radius: 5px; margin-top: 10px; }
-        QLineEdit, QTextEdit, QListWidget { background-color: #ffffff; color: #4b0082; border: 1px solid #c8a2c8; border-radius: 3px; padding: 2px; }
-        QPushButton { background-color: #9370db; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QWebEngineView { background-color: #ffffff; }
+    "6. Lavendel Light": """
+        QMainWindow { background-color: #f3e5f5; }
+        QGroupBox { background-color: #e1bee7; color: #6a1b9a; border: 1px solid #ce93d8; border-radius: 5px; margin-top: 10px; }
+        QLineEdit, QTextEdit, QListWidget { background-color: #f3e5f5; color: #6a1b9a; border: 1px solid #ce93d8; border-radius: 3px; padding: 2px; }
+        QPushButton { background-color: #ab47bc; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
+        QWebEngineView { background-color: #f3e5f5; }
     """,
-    "Hellgrün": """
-        QMainWindow { background-color: #f0fff0; }
-        QGroupBox { background-color: #e0ffe0; color: #006400; border: 1px solid #b3ffb3; border-radius: 5px; margin-top: 10px; }
-        QLineEdit, QTextEdit, QListWidget { background-color: #ffffff; color: #006400; border: 1px solid #b3ffb3; border-radius: 3px; padding: 2px; }
-        QPushButton { background-color: #32cd32; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QWebEngineView { background-color: #ffffff; }
+    "7. Hellgrün Fresh": """
+        QMainWindow { background-color: #e8f5e9; }
+        QGroupBox { background-color: #dcedc8; color: #388e3c; border: 1px solid #aed581; border-radius: 5px; margin-top: 10px; }
+        QLineEdit, QTextEdit, QListWidget { background-color: #e8f5e9; color: #388e3c; border: 1px solid #aed581; border-radius: 3px; padding: 2px; }
+        QPushButton { background-color: #66bb6a; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
+        QWebEngineView { background-color: #e8f5e9; }
     """,
-    "Gold": """
-        QMainWindow { background-color: #fafad2; }
-        QGroupBox { background-color: #fffacd; color: #666600; border: 1px solid #ffff99; border-radius: 5px; margin-top: 10px; }
-        QLineEdit, QTextEdit, QListWidget { background-color: #ffffff; color: #666600; border: 1px solid #ffff99; border-radius: 3px; padding: 2px; }
-        QPushButton { background-color: #ffd700; color: black; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QWebEngineView { background-color: #ffffff; }
+    "8. Gold Sparkle": """
+        QMainWindow { background-color: #fff8e1; }
+        QGroupBox { background-color: #ffe082; color: #f9a825; border: 1px solid #ffd54f; border-radius: 5px; margin-top: 10px; }
+        QLineEdit, QTextEdit, QListWidget { background-color: #fff8e1; color: #f9a825; border: 1px solid #ffd54f; border-radius: 3px; padding: 2px; }
+        QPushButton { background-color: #ffc107; color: black; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
+        QWebEngineView { background-color: #fff8e1; }
     """,
-    "Mandel": """
-        QMainWindow { background-color: #ffebcd; }
-        QGroupBox { background-color: #ffe4c4; color: #663300; border: 1px solid #ffd2a6; border-radius: 5px; margin-top: 10px; }
-        QLineEdit, QTextEdit, QListWidget { background-color: #ffffff; color: #663300; border: 1px solid #ffd2a6; border-radius: 3px; padding: 2px; }
-        QPushButton { background-color: #cd853f; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QWebEngineView { background-color: #ffffff; }
+    "9. Mandel Dream": """
+        QMainWindow { background-color: #fff3e0; }
+        QGroupBox { background-color: #ffe0b2; color: #5d4037; border: 1px solid #ffcc80; border-radius: 5px; margin-top: 10px; }
+        QLineEdit, QTextEdit, QListWidget { background-color: #fff3e0; color: #5d4037; border: 1px solid #ffcc80; border-radius: 3px; padding: 2px; }
+        QPushButton { background-color: #ffb74d; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
+        QWebEngineView { background-color: #fff3e0; }
     """,
-    "Old Lace": """
-        QMainWindow { background-color: #fdf5e6; }
-        QGroupBox { background-color: #fffaf0; color: #666633; border: 1px solid #f0e68c; border-radius: 5px; margin-top: 10px; }
-        QLineEdit, QTextEdit, QListWidget { background-color: #ffffff; color: #666633; border: 1px solid #f0e68c; border-radius: 3px; padding: 2px; }
-        QPushButton { background-color: #daa520; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QWebEngineView { background-color: #ffffff; }
-    """,
-    "Alice Blue": """
-        QMainWindow { background-color: #f0f8ff; }
-        QGroupBox { background-color: #e6f2ff; color: #003366; border: 1px solid #99ccff; border-radius: 5px; margin-top: 10px; }
-        QLineEdit, QTextEdit, QListWidget { background-color: #ffffff; color: #003366; border: 1px solid #99ccff; border-radius: 3px; padding: 2px; }
-        QPushButton { background-color: #6699ff; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QWebEngineView { background-color: #ffffff; }
-    """,
-    "Misty Rose": """
-        QMainWindow { background-color: #ffe4e1; }
-        QGroupBox { background-color: #ffdcd1; color: #993333; border: 1px solid #ffb3a7; border-radius: 5px; margin-top: 10px; }
-        QLineEdit, QTextEdit, QListWidget { background-color: #ffffff; color: #993333; border: 1px solid #ffb3a7; border-radius: 3px; padding: 2px; }
-        QPushButton { background-color: #ff6666; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QWebEngineView { background-color: #ffffff; }
+    "10. Neue Tag: Urban": """
+        QMainWindow { background-color: #f0f0f0; }
+        QGroupBox { background-color: #e0e0e0; color: #424242; border: 1px solid #bdbdbd; border-radius: 5px; margin-top: 10px; }
+        QLineEdit, QTextEdit, QListWidget { background-color: #ffffff; color: #424242; border: 1px solid #bdbdbd; border-radius: 3px; padding: 2px; }
+        QPushButton { background-color: #90caf9; color: #0d47a1; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
+        QWebEngineView { background-color: #f0f0f0; }
     """
 }
 
+# Nacht-Themen – alle Einträge nummerieren und unterschiedliche dunkle Farbtöne verwenden
 NIGHT_THEMES = {
-    "Dunkelgrau (Standard)": """
-        QMainWindow { background-color: #2c2c2c; }
-        QGroupBox { background-color: #3c3c3c; color: #eeeeee; border: 1px solid #555555; border-radius: 5px; margin-top: 10px; }
-        QLineEdit, QTextEdit, QListWidget { background-color: #2c2c2c; color: #ffffff; border: 1px solid #555555; border-radius: 3px; padding: 2px; }
-        QLabel { color: #ffffff; }
-        QPushButton { background-color: #161616; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QScrollBar { background-color: #333333; }
-        QWebEngineView { background-color: #000000; }
+    "1. Dunkelgrau (Standard)": """
+        QMainWindow { background-color: #2b2b2b; }
+        QGroupBox { background-color: #3a3a3a; color: #e0e0e0; border: 1px solid #555555; border-radius: 5px; margin-top: 10px; }
+        QLineEdit, QTextEdit, QListWidget { background-color: #2b2b2b; color: #e0e0e0; border: 1px solid #555555; border-radius: 3px; padding: 2px; }
+        QLabel { color: #e0e0e0; }
+        QPushButton { background-color: #1f1f1f; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
+        QWebEngineView { background-color: #1a1a1a; }
     """,
-    "Anthrazit": """
+    "2. Anthrazit Classic": """
         QMainWindow { background-color: #1a1a1a; }
-        QGroupBox { background-color: #2a2a2a; color: #cccccc; border: 1px solid #444444; border-radius: 5px; margin-top: 10px; }
-        QLineEdit, QTextEdit, QListWidget { background-color: #1a1a1a; color: #ffffff; border: 1px solid #444444; border-radius: 3px; padding: 2px; }
-        QLabel { color: #ffffff; }
-        QPushButton { background-color: #005500; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QScrollBar { background-color: #333333; }
-        QWebEngineView { background-color: #000000; }
+        QGroupBox { background-color: #262626; color: #cccccc; border: 1px solid #444444; border-radius: 5px; margin-top: 10px; }
+        QLineEdit, QTextEdit, QListWidget { background-color: #1a1a1a; color: #cccccc; border: 1px solid #444444; border-radius: 3px; padding: 2px; }
+        QLabel { color: #cccccc; }
+        QPushButton { background-color: #0d5c0d; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
+        QWebEngineView { background-color: #141414; }
     """,
-    "Blau (Dunkel)": """
+    "3. Blau (Dunkel)": """
         QMainWindow { background-color: #000033; }
-        QGroupBox { background-color: #000066; color: #cce6ff; border: 1px solid #000099; border-radius: 5px; margin-top: 10px; }
-        QLineEdit, QTextEdit, QListWidget { background-color: #000033; color: #cce6ff; border: 1px solid #000099; border-radius: 3px; padding: 2px; }
-        QLabel { color: #cce6ff; }
-        QPushButton { background-color: #0000cc; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QScrollBar { background-color: #333333; }
-        QWebEngineView { background-color: #000000; }
+        QGroupBox { background-color: #000055; color: #b3cde0; border: 1px solid #000088; border-radius: 5px; margin-top: 10px; }
+        QLineEdit, QTextEdit, QListWidget { background-color: #000033; color: #b3cde0; border: 1px solid #000088; border-radius: 3px; padding: 2px; }
+        QLabel { color: #b3cde0; }
+        QPushButton { background-color: #000077; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
+        QWebEngineView { background-color: #000033; }
     """,
-    "Schwarz (Tief)": """
+    "4. Schwarz (Tief)": """
         QMainWindow { background-color: #141414; }
         QGroupBox { background-color: #1e1a1a; color: #d3d3d3; border: 1px solid #333333; border-radius: 5px; margin-top: 10px; }
         QLineEdit, QTextEdit, QListWidget { background-color: #141414; color: #d3d3d3; border: 1px solid #333333; border-radius: 3px; padding: 2px; }
         QLabel { color: #d3d3d3; }
         QPushButton { background-color: #4f4f4f; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QScrollBar { background-color: #333333; }
-        QWebEngineView { background-color: #000000; }
+        QWebEngineView { background-color: #0e0e0e; }
     """,
-    "Dunkelgrau": """
-        QMainWindow { background-color: #202020; }
-        QGroupBox { background-color: #2b2b2b; color: #e0e0e0; border: 1px solid #444444; border-radius: 5px; margin-top: 10px; }
-        QLineEdit, QTextEdit, QListWidget { background-color: #202020; color: #e0e0e0; border: 1px solid #444444; border-radius: 3px; padding: 2px; }
-        QLabel { color: #e0e0e0; }
-        QPushButton { background-color: #555555; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QScrollBar { background-color: #333333; }
-        QWebEngineView { background-color: #000000; }
-    """,
-    "Grau": """
+    "5. Grau Urban": """
         QMainWindow { background-color: #2d2d2d; }
-        QGroupBox { background-color: #383838; color: #cccccc; border: 1px solid #555555; border-radius: 5px; margin-top: 10px; }
-        QLineEdit, QTextEdit, QListWidget { background-color: #2d2d2d; color: #cccccc; border: 1px solid #555555; border-radius: 3px; padding: 2px; }
+        QGroupBox { background-color: #3c3c3c; color: #cccccc; border: 1px solid #666666; border-radius: 5px; margin-top: 10px; }
+        QLineEdit, QTextEdit, QListWidget { background-color: #2d2d2d; color: #cccccc; border: 1px solid #666666; border-radius: 3px; padding: 2px; }
         QLabel { color: #cccccc; }
-        QPushButton { background-color: #666666; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QScrollBar { background-color: #333333; }
-        QWebEngineView { background-color: #000000; }
+        QPushButton { background-color: #707070; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
+        QWebEngineView { background-color: #242424; }
     """,
-    "Mittelgrau": """
+    "6. Mittelgrau Chic": """
         QMainWindow { background-color: #363636; }
         QGroupBox { background-color: #424242; color: #bfbfbf; border: 1px solid #666666; border-radius: 5px; margin-top: 10px; }
         QLineEdit, QTextEdit, QListWidget { background-color: #363636; color: #bfbfbf; border: 1px solid #666666; border-radius: 3px; padding: 2px; }
         QLabel { color: #bfbfbf; }
         QPushButton { background-color: #737373; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QScrollBar { background-color: #333333; }
-        QWebEngineView { background-color: #000000; }
+        QWebEngineView { background-color: #2a2a2a; }
     """,
-    "Grau (Dunkel 2)": """
+    "7. Grau (Dunkel 2)": """
         QMainWindow { background-color: #585858; }
         QGroupBox { background-color: #636363; color: #7a7a7a; border: 1px solid #888888; border-radius: 5px; margin-top: 10px; }
         QLineEdit, QTextEdit, QListWidget { background-color: #585858; color: #7a7a7a; border: 1px solid #888888; border-radius: 3px; padding: 2px; }
         QLabel { color: #7a7a7a; }
         QPushButton { background-color: #707070; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QScrollBar { background-color: #333333; }
-        QWebEngineView { background-color: #000000; }
+        QWebEngineView { background-color: #505050; }
     """,
-    "Hellgrau": """
+    "8. Hellgrau Soft": """
         QMainWindow { background-color: #606060; }
         QGroupBox { background-color: #6a6a6a; color: #737373; border: 1px solid #888888; border-radius: 5px; margin-top: 10px; }
         QLineEdit, QTextEdit, QListWidget { background-color: #606060; color: #737373; border: 1px solid #888888; border-radius: 3px; padding: 2px; }
         QLabel { color: #737373; }
         QPushButton { background-color: #787878; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
-        QScrollBar { background-color: #333333; }
-        QWebEngineView { background-color: #000000; }
+        QWebEngineView { background-color: #555555; }
+    """,
+    "9. Neon Night": """
+        QMainWindow { background-color: #121212; }
+        QGroupBox { background-color: #1e1e1e; color: #80cbc4; border: 1px solid #009688; border-radius: 5px; margin-top: 10px; }
+        QLineEdit, QTextEdit, QListWidget { background-color: #121212; color: #80cbc4; border: 1px solid #009688; border-radius: 3px; padding: 2px; }
+        QLabel { color: #80cbc4; }
+        QPushButton { background-color: #009688; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
+        QWebEngineView { background-color: #121212; }
+    """,
+    "10. Galaxy Night": """
+        QMainWindow { background-color: #0d0d0d; }
+        QGroupBox { background-color: #1a1a1a; color: #aab; border: 1px solid #444; border-radius: 5px; margin-top: 10px; }
+        QLineEdit, QTextEdit, QListWidget { background-color: #0d0d0d; color: #aab; border: 1px solid #444; border-radius: 3px; padding: 2px; }
+        QLabel { color: #aab; }
+        QPushButton { background-color: #333366; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px; }
+        QWebEngineView { background-color: #0d0d0d; }
     """
 }
 
@@ -560,39 +934,33 @@ def socks5_get(url, proxy_host, proxy_port, timeout=10):
 # Hauptklasse
 # -------------------------------------------------------------------
 # Änderungen:
-# 1. Zuerst wird die Benutzeroberfläche initialisiert (_setup_ui), bevor auf Widgets zugegriffen wird.
-# 2. Anschließend wird geprüft, ob die Config-Datei existiert – falls nicht, wird sie mit Standardwerten erstellt.
-# 3. Falls ein Fehler beim Laden der Config auftritt, wird ein Fallback implementiert.
-# 4. Die Video-Abdunklungs-Funktion wird so umprogrammiert, dass im Nachtmodus, wenn die Checkbox angehakt ist,
-#    der Filter über ein GUI-Overlay angewendet wird.
+# - Der "Über Yc.U"-Button wurde um 50% verkleinert und die Farbe auf grau geändert.
+# - Automatische Übersetzung der Funktionen und Ausgaben in Englisch, Französisch, Spanisch, Polnisch, Russisch
+#   wird in Abhängigkeit von der Benutzersprache aktiviert. Falls keine passende Sprache vorhanden ist, wird standardmäßig Englisch verwendet.
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        # Programmtitel und Config-Namen anpassen
         self.setWindowTitle("Yc.U - YouClick Ultimate")
         self.resize(2000, 850)
         self._is_running = False
         self._current_timer = None
         self.page_calls_count = 0
         self.video_filter_enabled = False
-        self.video_filter_level = 50  # 0-100, Default 50
+        self.video_filter_level = 50
 
-        # First build the UI components
-        self._setup_ui()  # This creates url_list_widget and other widgets
+        self._setup_ui()
 
-        # Now initialize settings AFTER UI components exist
-        config_dir = os.path.join(QStandardPaths.writableLocation(QStandardPaths.ConfigLocation), "YouClick Ultimate")
+        # Config-Ordner nun "Yc.U.py"
+        config_dir = os.path.join(QStandardPaths.writableLocation(QStandardPaths.ConfigLocation), "Yc.U.py")
         if not os.path.exists(config_dir):
             os.makedirs(config_dir)
         self.config_file = os.path.join(config_dir, "Yc.U.conf")
         self.settings = QSettings(self.config_file, QSettings.IniFormat)
 
-        # Only create default config if it doesn't exist
         if not os.path.exists(self.config_file):
-            self.save_settings()  # Now safe because UI components exist
+            self.save_settings()
 
-        # Rest of initialization
         self.log_messages = []
         self.last_wait_time = None
         self.wait_start = None
@@ -611,17 +979,27 @@ class MainWindow(QMainWindow):
         self.web_view.loadFinished.connect(self.handle_video_load)
 
     def handle_video_load(self, finished):
-        # Statt CSS/JS wird nun das Overlay aktualisiert
         self.update_video_filter()
+        current_url = self.web_view.url().toString()
+        if ("youtube.com/watch" in current_url or "youtu.be/" in current_url):
+            js = """
+            (function() {
+                var masthead = document.querySelector('ytd-masthead');
+                if(masthead) masthead.style.display = 'none';
+                var secondary = document.querySelector('#secondary');
+                if(secondary) secondary.style.display = 'none';
+                var comments = document.querySelector('ytd-comments');
+                if(comments) comments.style.display = 'none';
+            })();
+            """
+            self.web_view.page().runJavaScript(js)
 
     def update_video_filter(self):
-        # Aktualisiert den Overlay-Filter basierend auf Checkbox und Slider
         if self.current_theme == "night" and self.filter_checkbox.isChecked():
             opacity = self.filter_slider.value() / 100.0
             effect = QGraphicsOpacityEffect(self.video_overlay)
             effect.setOpacity(opacity)
             self.video_overlay.setGraphicsEffect(effect)
-            # Overlay an die aktuelle Größe der WebView anpassen
             self.video_overlay.setGeometry(0, 0, self.web_view.width(), self.web_view.height())
             self.video_overlay.show()
             self.video_overlay.raise_()
@@ -686,6 +1064,7 @@ class MainWindow(QMainWindow):
         if isinstance(self.log_messages, str):
             self.log_messages = self.log_messages.splitlines()
         self.status_edit.setPlainText("\n".join(self.log_messages))
+        self.status_edit.moveCursor(QTextCursor.Start)
         url_scope = self.settings.value("url_scope", "Einzelne URL")
         if url_scope == "Einzelne URL":
             self.radio_url_single.setChecked(True)
@@ -711,8 +1090,8 @@ class MainWindow(QMainWindow):
         night_time_str = self.settings.value("night_time", "18:00")
         self.day_time_edit.setTime(QTime.fromString(day_time_str, "HH:mm"))
         self.night_time_edit.setTime(QTime.fromString(night_time_str, "HH:mm"))
-        day_theme = self.settings.value("day_theme", "Weiß (Standard)")
-        night_theme = self.settings.value("night_theme", "Dunkelgrau (Standard)")
+        day_theme = self.settings.value("day_theme", "1. Weiß (Standard)")
+        night_theme = self.settings.value("night_theme", "1. Dunkelgrau (Standard)")
         index = self.day_theme_combo.findText(day_theme)
         if index >= 0:
             self.day_theme_combo.setCurrentIndex(index)
@@ -730,7 +1109,7 @@ class MainWindow(QMainWindow):
         central.setLayout(main_v_layout)
         self.setCentralWidget(central)
 
-        # --- Konfigurationsleiste: Theme-Zeit Einstellungen (immer aktiv)
+        # --- Konfigurationsleiste: Theme-Zeit Einstellungen
         theme_time_layout = QHBoxLayout()
         self.day_time_edit = QTimeEdit()
         self.day_time_edit.setDisplayFormat("HH:mm")
@@ -744,7 +1123,7 @@ class MainWindow(QMainWindow):
         theme_time_layout.addWidget(self.night_time_edit)
         main_v_layout.addLayout(theme_time_layout)
 
-        # --- Theme-Auswahl (immer aktiv)
+        # --- Theme-Auswahl
         theme_select_layout = QHBoxLayout()
         theme_select_layout.addWidget(QLabel(_tr("Tag Theme:")))
         self.day_theme_combo = QComboBox()
@@ -758,7 +1137,7 @@ class MainWindow(QMainWindow):
         theme_select_layout.addWidget(self.night_theme_combo)
         main_v_layout.addLayout(theme_select_layout)
 
-        # --- Mode Buttons: Tag und Nacht
+        # --- Mode Buttons
         mode_button_layout = QHBoxLayout()
         self.btn_day_mode = QPushButton(_tr("Tag Modus"))
         self.btn_day_mode.setStyleSheet(DAY_BUTTON_STYLE_DEFAULT)
@@ -772,7 +1151,6 @@ class MainWindow(QMainWindow):
 
         # --- Linke Spalte: URLs, Funktionen und Parameter
         left_column = QVBoxLayout()
-        # Gruppe "URLs"
         self.group_urls = QGroupBox(_tr("URLs"))
         urls_layout = QHBoxLayout()
         self.group_urls.setLayout(urls_layout)
@@ -789,7 +1167,6 @@ class MainWindow(QMainWindow):
         self.radio_url_single.setChecked(True)
         left_column.addWidget(self.group_urls)
 
-        # Gruppe "Funktionen"
         self.group_functions = QGroupBox(_tr("Funktionen"))
         functions_layout = QHBoxLayout()
         self.group_functions.setLayout(functions_layout)
@@ -806,11 +1183,9 @@ class MainWindow(QMainWindow):
         self.radio_func_once.setChecked(True)
         left_column.addWidget(self.group_functions)
 
-        # Gruppe "Parameter & URL Eingabe"
         self.group_parameter = QGroupBox(_tr("Parameter & URL Eingabe"))
         param_layout = QVBoxLayout()
         self.group_parameter.setLayout(param_layout)
-        # Zeile 1: Wartezeit URL Aufruf
         row1 = QHBoxLayout()
         row1.addWidget(QLabel(_tr("Wartezeit")))
         self.wait_time_spinbox = QDoubleSpinBox()
@@ -820,7 +1195,6 @@ class MainWindow(QMainWindow):
         self.wait_time_spinbox.setSingleStep(0.1)
         row1.addWidget(self.wait_time_spinbox)
         param_layout.addLayout(row1)
-        # Zeile 2: Random Zusatz MIN (ms)
         row2 = QHBoxLayout()
         row2.addWidget(QLabel(_tr("Random Zusatz MIN (ms):")))
         self.min_wait_spinbox = QSpinBox()
@@ -829,7 +1203,6 @@ class MainWindow(QMainWindow):
         self.min_wait_spinbox.setValue(100)
         row2.addWidget(self.min_wait_spinbox)
         param_layout.addLayout(row2)
-        # Zeile 3: Random Zusatz MAX (ms)
         row3 = QHBoxLayout()
         row3.addWidget(QLabel(_tr("Random Zusatz MAX (ms):")))
         self.max_wait_spinbox = QSpinBox()
@@ -838,7 +1211,6 @@ class MainWindow(QMainWindow):
         self.max_wait_spinbox.setValue(500)
         row3.addWidget(self.max_wait_spinbox)
         param_layout.addLayout(row3)
-        # Zeile 4: Durchlauf Wiederholungen -> "Wiederholungen:"
         row4 = QHBoxLayout()
         row4.addWidget(QLabel(_tr("Wiederholungen:")))
         self.repeat_spinbox = QSpinBox()
@@ -847,12 +1219,10 @@ class MainWindow(QMainWindow):
         self.repeat_spinbox.setValue(1)
         row4.addWidget(self.repeat_spinbox)
         param_layout.addLayout(row4)
-        # URL Eingabe
         self.new_url_edit = QLineEdit()
         self.new_url_edit.setPlaceholderText(_tr("Neue URL eingeben..."))
         self.new_url_edit.installEventFilter(self)
         param_layout.addWidget(self.new_url_edit)
-        # Buttons für URL-Eingabe
         url_button_layout = QHBoxLayout()
         self.btn_add_url = QPushButton(_tr("URL Hinzufügen"))
         self.btn_add_url.setStyleSheet(DAY_BUTTON_STYLE_GREEN)
@@ -869,7 +1239,6 @@ class MainWindow(QMainWindow):
         param_layout.addLayout(url_button_layout)
         left_column.addWidget(self.group_parameter)
 
-        # --- Proxy Einstellungen (Eingabefelder, die beim Laufen deaktiviert werden sollen)
         self.group_proxy = QGroupBox(_tr("Proxy Einstellungen"))
         proxy_layout = QHBoxLayout()
         self.group_proxy.setLayout(proxy_layout)
@@ -889,7 +1258,6 @@ class MainWindow(QMainWindow):
         proxy_layout.addWidget(self.proxy_port_edit)
         left_column.addWidget(self.group_proxy)
 
-        # --- Horizontale Aufteilung: Linke Spalte und Videoanzeige
         content_layout = QHBoxLayout()
         content_layout.addLayout(left_column, stretch=1)
         self.group_website = QGroupBox(_tr("Aufgerufene Website / Video"))
@@ -897,8 +1265,6 @@ class MainWindow(QMainWindow):
         self.group_website.setLayout(website_layout)
         self.web_view = QWebEngineView()
         website_layout.addWidget(self.web_view)
-        # --- Video Filter für Nachtmodus: Abdunkeln des Video-Bereichs
-        # Das Video wird nun nicht über CSS/JS, sondern über ein GUI-Overlay abgedunkelt.
         self.video_overlay = QWidget(self.web_view)
         self.video_overlay.setAttribute(Qt.WA_TransparentForMouseEvents, True)
         self.video_overlay.setStyleSheet("background-color: black;")
@@ -914,7 +1280,6 @@ class MainWindow(QMainWindow):
         website_layout.addLayout(filter_layout)
         self.filter_checkbox.toggled.connect(self.update_video_filter)
         self.filter_slider.valueChanged.connect(self.update_video_filter)
-        # --- Livestatus Leiste und Fortschrittsbalken
         self.status_params = QLabel("")
         self.status_params.setStyleSheet("background-color: #d3d3d3; border: 1px solid #cccccc; padding: 3px; font-weight: bold; color: black;")
         self.progress_bar = QProgressBar()
@@ -927,7 +1292,6 @@ class MainWindow(QMainWindow):
         content_layout.addWidget(self.group_website, stretch=1)
         main_v_layout.addLayout(content_layout)
 
-        # --- YouTube Kanal Videos abrufen und Eingabefeld
         self.btn_channel_videos = QPushButton(_tr("YouTube Kanal Videos abrufen"))
         self.btn_channel_videos.setStyleSheet(DAY_BUTTON_STYLE_DEFAULT)
         self.btn_channel_videos.clicked.connect(self.fetch_channel_videos)
@@ -936,7 +1300,6 @@ class MainWindow(QMainWindow):
         self.youtube_channel_edit.setPlaceholderText(_tr("YouTube Kanal-URL, Kanal-ID oder Handle eingeben..."))
         main_v_layout.addWidget(self.youtube_channel_edit)
 
-        # --- Gruppe URL Auswahl
         self.group_url_list = QGroupBox(_tr("URL Auswahl"))
         url_list_layout = QVBoxLayout()
         self.group_url_list.setLayout(url_list_layout)
@@ -945,7 +1308,6 @@ class MainWindow(QMainWindow):
         url_list_layout.addWidget(self.url_list_widget)
         main_v_layout.addWidget(self.group_url_list)
 
-        # --- Start / STOP Buttons (ohne Parameter Aktualisieren)
         btn_layout = QHBoxLayout()
         self.btn_start = QPushButton("Start")
         self.btn_start.setStyleSheet(DAY_BUTTON_STYLE_GREEN)
@@ -957,7 +1319,6 @@ class MainWindow(QMainWindow):
         btn_layout.addWidget(self.btn_stop)
         main_v_layout.addLayout(btn_layout)
 
-        # --- Protokoll / Live Status und Config Buttons
         self.group_status = QGroupBox(_tr("Protokoll / Live Status"))
         status_layout = QVBoxLayout()
         self.group_status.setLayout(status_layout)
@@ -978,11 +1339,26 @@ class MainWindow(QMainWindow):
         self.btn_config_export = QPushButton("Config exportieren")
         self.btn_config_export.clicked.connect(self.export_config)
         self.btn_config_export.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        # Gleicher Anteil für alle vier Buttons
+        self.btn_cookies_show = QPushButton("Cookies anzeigen")
+        self.btn_cookies_show.clicked.connect(self.show_cookies)
+        self.btn_cookies_show.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.btn_cookies_delete = QPushButton("Cookies löschen")
+        self.btn_cookies_delete.clicked.connect(self.delete_cookies)
+        self.btn_cookies_delete.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        # Angepasster "Über Yc.U"-Button: 50% verkleinert und graue Farbe
+        self.btn_about = QPushButton(_tr("Über Yc.U"))
+        self.btn_about.setStyleSheet("background-color: grey; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px;")
+        self.btn_about.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        original_width = self.btn_about.sizeHint().width()
+        self.btn_about.setFixedWidth(int(original_width * 1.5))
+        self.btn_about.clicked.connect(self.show_about)
         config_buttons_layout.addWidget(self.btn_clear_log, 1)
         config_buttons_layout.addWidget(self.btn_config_folder, 1)
         config_buttons_layout.addWidget(self.btn_config_import, 1)
         config_buttons_layout.addWidget(self.btn_config_export, 1)
+        config_buttons_layout.addWidget(self.btn_cookies_show, 1)
+        config_buttons_layout.addWidget(self.btn_cookies_delete, 1)
+        config_buttons_layout.addWidget(self.btn_about, 1)
         status_layout.addLayout(config_buttons_layout)
         main_v_layout.addWidget(self.group_status)
 
@@ -996,7 +1372,7 @@ class MainWindow(QMainWindow):
         return super().eventFilter(obj, event)
 
     def open_config_folder(self):
-        config_path = os.path.join(QStandardPaths.writableLocation(QStandardPaths.ConfigLocation), "YouClick Ultimate")
+        config_path = os.path.join(QStandardPaths.writableLocation(QStandardPaths.ConfigLocation), "Yc.U.py")
         if not os.path.exists(config_path):
             os.makedirs(config_path)
         QDesktopServices.openUrl(QUrl.fromLocalFile(config_path))
@@ -1005,23 +1381,13 @@ class MainWindow(QMainWindow):
         src, _ = QFileDialog.getOpenFileName(self, "Config importieren", "", "CONF Files (*.conf)")
         if src:
             try:
-                # Konfigurationsdatei ersetzen
                 shutil.copy(src, self.config_file)
-                
-                # QSettings-Instanz neu initialisieren
                 self.settings = QSettings(self.config_file, QSettings.IniFormat)
-                
-                # Einstellungen komplett neu laden
                 self.load_settings()
-                
-                # UI-Komponenten aktualisieren
                 self.update_status_bar()
-                self.apply_theme_automatically()  # Theme neu anwenden
+                self.apply_theme_automatically()
                 self.log_status("Config importiert und aktiviert: " + src)
-                
-                # Web-View zurücksetzen
                 self.web_view.setHtml("")
-                
             except Exception as e:
                 self.log_status("Fehler beim Importieren: " + str(e))
 
@@ -1035,6 +1401,36 @@ class MainWindow(QMainWindow):
                 self.log_status("Config exportiert: " + full_dest)
             except Exception as e:
                 self.log_status("Fehler beim Exportieren: " + str(e))
+
+    def show_cookies(self):
+        folder = os.path.join(os.path.expanduser("~"), ".local", "share", "Yc.U.py")
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        QDesktopServices.openUrl(QUrl.fromLocalFile(folder))
+
+    def delete_cookies(self):
+        folder = os.path.join(os.path.expanduser("~"), ".local", "share", "Yc.U.py")
+        try:
+            if os.path.exists(folder):
+                shutil.rmtree(folder)
+                self.log_status("Cookies-Ordner gelöscht: " + folder)
+            else:
+                self.log_status("Cookies-Ordner existiert nicht.")
+        except Exception as e:
+            self.log_status("Fehler beim Löschen des Cookies-Ordners: " + str(e))
+
+    def show_about(self):
+        about_text = (
+            "Yc.U - YouClick Ultimate\n\n"
+            "Yc.U ist ein vielseitiges Programm zur Automatisierung von Webseiten- und Videoaufrufen. "
+            "Das Programm unterstützt Funktionen wie URL-Management, Proxy-Einstellungen, Theme-Wechsel und "
+            "eine spezielle YouTube-Integration. \n\n"
+            "Entwickler: OpenWorld2025\n"
+            "E-Mail: OpenWorld2025@protonmail.com\n\n"
+            "Relevante Themen: Automatisierung, URL-Management, Theme-Wechsel, YouTube-Integration, "
+            "benutzerdefinierte Einstellungen und vieles mehr."
+        )
+        QMessageBox.about(self, _tr("Über Yc.U"), about_text)
 
     def clear_log(self):
         self.log_messages = []
@@ -1052,7 +1448,6 @@ class MainWindow(QMainWindow):
     def update_status_bar(self):
         urls = self.get_checked_urls()
         url_count = len(urls)
-        func = _tr("Einmalig") if self.radio_func_once.isChecked() else (_tr("Sequentiell") if self.radio_func_sequential.isChecked() else _tr("Zufällig"))
         _, _, _, repeat = self.get_parameters()
         if self._is_running and hasattr(self, '_repeat_count') and hasattr(self, '_current_repeat') and hasattr(self, '_urls'):
             repetition_status = f"{self._current_repeat + 1} / {self._repeat_count}"
@@ -1063,7 +1458,7 @@ class MainWindow(QMainWindow):
             repetition_status = f"{repeat} / {repeat}"
             page_status = f"{self.page_calls_count}"
             current_wait = f"{self.get_parameters()[0]:.3f}"
-        status_text = (f"URLs: {url_count} | {_tr('Funkt.:')} {func} | {_tr('Wartezeit')} {current_wait} s | "
+        status_text = (f"URLs: {url_count} | {_tr('Wartezeit')} {current_wait} s | "
                        f"{_tr('Wiederholungen:')} {repetition_status} | Seitenaufrufe: {page_status}")
         self.status_params.setText(status_text)
 
@@ -1134,7 +1529,6 @@ class MainWindow(QMainWindow):
         self.status_edit.moveCursor(QTextCursor.Start)
         logging.info(message)
 
-    # Sperre veränderbare Eingabefelder (außer Tagzeit und Theme) während des Betriebs.
     def set_controls_enabled(self, enabled):
         self.btn_start.setEnabled(enabled)
         self.btn_stop.setEnabled(not enabled)
@@ -1173,7 +1567,7 @@ class MainWindow(QMainWindow):
         self.current_theme = mode
         if mode == "day":
             theme_name = self.day_theme_combo.currentText()
-            style = DAY_THEMES.get(theme_name, DAY_THEMES["Weiß (Standard)"])
+            style = DAY_THEMES.get(theme_name, DAY_THEMES["1. Weiß (Standard)"])
             self.setStyleSheet(style)
             self.btn_day_mode.setStyleSheet(DAY_BUTTON_STYLE_DEFAULT)
             self.btn_night_mode.setStyleSheet("background-color: #333333; color: white; border-radius: 5px; padding: 10px 20px; font-size: 14px;")
@@ -1213,7 +1607,7 @@ class MainWindow(QMainWindow):
 
         elif mode == "night":
             theme_name = self.night_theme_combo.currentText()
-            style = NIGHT_THEMES.get(theme_name, NIGHT_THEMES["Dunkelgrau (Standard)"])
+            style = NIGHT_THEMES.get(theme_name, NIGHT_THEMES["1. Dunkelgrau (Standard)"])
             self.setStyleSheet(style)
             dark_style = "background-color: #333333; color: white; border: 1px solid #555555;"
             self.day_time_edit.setStyleSheet(dark_style)
@@ -1251,14 +1645,11 @@ class MainWindow(QMainWindow):
             self.filter_checkbox.setEnabled(True)
             self.filter_slider.setEnabled(True)
             self.web_view.setStyleSheet("QScrollBar:vertical { background: #333333; } QScrollBar:horizontal { background: #333333; }")
-            
-            # Filter sofort aktivieren bei Nachtmodus
             if self.filter_checkbox.isChecked():
                 self.update_video_filter()
                 self.video_overlay.show()
             else:
                 self.video_overlay.hide()
-
             self.update_status_bar()
 
     def get_youtube_title(self, url):
