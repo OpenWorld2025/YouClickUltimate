@@ -3,7 +3,8 @@
 A powerfulURL Click generator tool for automated YouTube/web interactions with proxy support and UI customization.
 
 
-![Yc U](https://github.com/user-attachments/assets/153ce41a-4d45-402d-a3de-50818ce58e0b)
+![YcU2](https://github.com/user-attachments/assets/2d8f01c2-999b-444c-a4cd-38500ef8339e)
+
 
 
 
